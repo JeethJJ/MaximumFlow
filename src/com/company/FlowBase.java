@@ -13,6 +13,8 @@ public class FlowBase {
     public int visitedToken = 1;
     public int[] visited;
     public long maxFlow;
+    public static ArrayList<Edges>[][] path;        // list of all edges
+
 
     public FlowBase(int source,int sink,int noOfNodes) {
         this.source = source;
@@ -40,20 +42,19 @@ public class FlowBase {
         edges[end].add(e2);
     }
 
-    public List<Edges>[] getGraph() {
-        solve();
-        return edges;
-    }
-
     public long getMaxFlow() {
+        System.out.println("Path & flow in that path\n");
+        System.out.print("Source node "+source+" -> ");
         solve();
         return maxFlow;
     }
 
     public void solve() {
         for (long f = dfs(source, INF); f!= 0; f = dfs(source, INF)) {
+            System.out.println("Flow in path = " + f +"\n");
             visitedToken++;
             maxFlow += f;
+            System.out.print("Source node "+source+" -> ");
         }
     }
 
@@ -65,6 +66,11 @@ public class FlowBase {
         List<Edges> edgeCheck = edges[node];
         for (Edges edge : edgeCheck) {
             if (edge.leftCapacity() > 0 && visited[edge.getEnd()] != visitedToken) {
+                if(edge.getEnd()==sink){
+                    System.out.println("Sink node " +edge.getEnd());
+                }else {
+                    System.out.print("Node " +edge.getEnd() + " -> ");
+                }
                 long bottleNeck = dfs(edge.getEnd(), min(flow, edge.leftCapacity()));
                 if (bottleNeck > 0) {
                     edge.addFlow(bottleNeck);
@@ -72,6 +78,7 @@ public class FlowBase {
                 }
             }
         }
+        //System.out.println("!!! This path won't continue!! All possible paths taken !!!");
         return 0;
     }
 }
