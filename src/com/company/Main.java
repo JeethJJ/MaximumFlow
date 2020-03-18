@@ -1,10 +1,6 @@
 package com.company;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import static java.lang.Math.min;
-
 public class Main {
 
 
@@ -84,8 +80,21 @@ public class Main {
         fb.addEdge(6, t, 10);
 
 
-
-
         System.out.println("!!! This path won't continue!! All possible paths taken !!!\n\nMaximum flow = "+fb.getMaxFlow());
+
+//        for(List<Edges> l : fb.getGraph()){
+//            for(Edges e : l ){
+//                System.out.println(e.getStart());
+//            }
+//        }
+
+        List<Edges>[] resultGraph = fb.getGraph();
+
+        // Displays all edges part of the resulting residual graph.
+        for (List<Edges> edges : resultGraph){
+            for (Edges e : edges){
+                System.out.println(e.toString(s, t));
+            }
+        }
     }
 }

@@ -45,4 +45,12 @@ public class Edges {
         flow += bottleNeck;
         residualEdge.flow -= bottleNeck;
     }
+
+    public String toString(int s, int t) {
+        String u = (start == s) ? "source" : ((start == t) ? "sink" : String.valueOf(start));
+        String v = (end == s) ? "source" : ((end == t) ? "sink" : String.valueOf(end));
+        return String.format(
+                "Edge %6s -> %6s | flow = %3d | capacity = %3d | Is residual - %s",
+                u, v, flow, capacity, isResidual());
+    }
 }

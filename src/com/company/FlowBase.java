@@ -30,6 +30,11 @@ public class FlowBase {
         }
     }
 
+    public List<Edges>[] getGraph() {
+        solve();
+        return edges;
+    }
+
     public void addEdge(int start, int end, long capacity) {
         if (capacity <= 0) {
             throw new IllegalArgumentException("Edge capacity should be greater than 0");
