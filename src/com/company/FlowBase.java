@@ -48,6 +48,26 @@ public class FlowBase {
         }
     }
 
+    public void deleteEdge(Edges e) {
+        Edges deleteEdge = null;
+        boolean found=false;
+        int delete=0;
+        for (List<Edges> ed : edges){
+            for(Edges eee : ed){
+                if(eee.equals(e)){
+                    deleteEdge=eee;
+                    found = true;
+                    break;
+                }
+            }
+            if(found) {
+                break;
+            }
+            delete++;
+        }
+        edges[delete].remove(deleteEdge);
+    }
+
     public void addEdge(int start, int end, long capacity) {
         if (capacity <= 0) {
             throw new IllegalArgumentException("Edge capacity should be greater than 0");

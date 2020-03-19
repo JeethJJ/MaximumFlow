@@ -184,16 +184,25 @@ public class Main {
 
                     boolean deleted = false;
                     List<Edges>[] allEdges = fb.getGraph();
+                    Edges deleteEdgeObj = null;
+                    Edges deleteEdgeObjResidual = null;
                     for (List<Edges> edges : allEdges){
                         for (Edges e : edges){
                             if(e.getStart()==delstart && e.getEnd()==delend){
-                                fb.alterCapacityEdge(e,0);
+                                deleteEdgeObj=e;
                                 deleted=true;
-                                System.out.println("Successfully deleted!!");
+                            }
+                            if(e.getStart()==delend && e.getEnd()==delstart){
+                                deleteEdgeObjResidual=e;
+                                deleted=true;
                             }
                         }
                     }
-                    if(!deleted){
+                    if(deleted){
+                        fb.deleteEdge(deleteEdgeObj);
+                        fb.deleteEdge(deleteEdgeObjResidual);
+                        System.out.println("Successfully deleted!!");
+                    }else{
                         System.out.println("No such node found!!");
                     }
                     break;
@@ -245,7 +254,10 @@ public class Main {
                         }
                     }
                     break;
+
             }
         }
     }
 }
+
+
