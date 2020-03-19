@@ -3,6 +3,8 @@
 package com.company;
 
 import java.util.List;
+import java.util.Scanner;
+
 public class Main {
 
 
@@ -54,48 +56,123 @@ public class Main {
 //        fb.addEdge(6, t, 15);
 //        fb.addEdge(8, t, 10);
 
-        int n = 8;
-        int s = 0;
-        int t = 7;
+//        int n = 8;
+//        int s = 0;
+//        int t = 7;
+//
+//        FlowBase fb = new FlowBase(s,t,n);
+//
+//        // Edges from source
+//        fb.addEdge(s, 1, 10);
+//        fb.addEdge(s, 2, 5);
+//        fb.addEdge(s, 3, 15);
+//
+//        // Middle edges
+//        fb.addEdge(1, 4, 9);
+//        fb.addEdge(1, 2, 4);
+//        fb.addEdge(1, 5, 15);
+//        fb.addEdge(2, 5, 8);
+//        fb.addEdge(2, 3, 4);
+//        fb.addEdge(3, 6, 16);
+//        fb.addEdge(6, 2, 6);
+//        fb.addEdge(5, 6, 15);
+//        fb.addEdge(4, 5, 15);
+//
+//        // Edges to sink
+//        fb.addEdge(4, t, 10);
+//        fb.addEdge(5, t, 10);
+//        fb.addEdge(6, t, 10);
+
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Welcome !! \nCreate a graph to continue ...");
+        System.out.print("Enter number of nodes including source and sink :");
+        int n = sc.nextInt();
+
+        System.out.print("Enter the number of source node :");
+        int s = sc.nextInt();
+
+        System.out.print("Enter the number of sink node :");
+        int t = sc.nextInt();
 
         FlowBase fb = new FlowBase(s,t,n);
 
-        // Edges from source
-        fb.addEdge(s, 1, 10);
-        fb.addEdge(s, 2, 5);
-        fb.addEdge(s, 3, 15);
+        int status=0;
+        while(status!=5){
+            System.out.print("\n1.Add edge \n2.Delete edge \n3.Edit edge \n4.Get maximum flow \n5.Exit \n:");
+            status = sc.nextInt();
 
-        // Middle edges
-        fb.addEdge(1, 4, 9);
-        fb.addEdge(1, 2, 4);
-        fb.addEdge(1, 5, 15);
-        fb.addEdge(2, 5, 8);
-        fb.addEdge(2, 3, 4);
-        fb.addEdge(3, 6, 16);
-        fb.addEdge(6, 2, 6);
-        fb.addEdge(5, 6, 15);
-        fb.addEdge(4, 5, 15);
+            switch (status){
+                case 1 :
+                    System.out.print("Enter the number of start node :");
+                    int start = sc.nextInt();
 
-        // Edges to sink
-        fb.addEdge(4, t, 10);
-        fb.addEdge(5, t, 10);
-        fb.addEdge(6, t, 10);
+                    System.out.print("Enter the number of end node :");
+                    int end = sc.nextInt();
 
+                    System.out.print("Enter the capacity of the edge :");
+                    int capacity = sc.nextInt();
 
-        System.out.println("!!! This path won't continue!! All possible paths taken !!!\n\nMaximum flow = "+fb.getMaxFlow());
+                    fb.addEdge(start,end,capacity);
+                    break;
 
-//        for(List<Edges> l : fb.getGraph()){
-//            for(Edges e : l ){
-//                System.out.println(e.getStart());
-//            }
-//        }
+                case 2 :
+                    System.out.print("Enter the number of start node :");
+                    int delstart = sc.nextInt();
 
-        List<Edges>[] resultGraph = fb.getGraph();
+                    System.out.print("Enter the number of end node :");
+                    int delend = sc.nextInt();
 
-        // Displays all edges part of the resulting residual graph.
-        for (List<Edges> edges : resultGraph){
-            for (Edges e : edges){
-                System.out.println(e.toString(s, t));
+                    boolean deleted = false;
+                    List<Edges>[] allEdges = fb.getGraph();
+                    for (List<Edges> edges : allEdges){
+                        for (Edges e : edges){
+                            if(e.getStart()==delstart && e.getEnd()==delend){
+                                fb.alterCapacityEdge(e,0);
+                                deleted=true;
+                                System.out.println("Successfully deleted!!");
+                            }
+                        }
+                    }
+                    if(!deleted){
+                        System.out.println("No such node found!!");
+                    }
+                    break;
+
+                case 3 :
+                    System.out.print("Enter the number of start node :");
+                    int altstart = sc.nextInt();
+
+                    System.out.print("Enter the number of end node :");
+                    int altend = sc.nextInt();
+
+                    boolean altered = false;
+                    List<Edges>[] allEgdesAlt = fb.getGraph();
+                    for (List<Edges> edges2 : allEgdesAlt){
+                        for (Edges e2 : edges2){
+                            if(e2.getStart()==altstart && e2.getEnd()==altend){
+                                System.out.print("Enter the new capacity :");
+                                int cap = sc.nextInt();
+                                fb.alterCapacityEdge(e2,cap);
+                                altered=true;
+                                System.out.println("Successfully edited!!");
+                            }
+                        }
+                    }
+                    if(!altered){
+                        System.out.println("No such node found!!");
+                    }
+                    break;
+                case 4:
+                    System.out.println("!!! This path won't continue!! All possible paths taken or no possible paths available!!!\n\nMaximum flow = "+fb.getMaxFlow());
+                    List<Edges>[] resultGraph = fb.getGraph();
+
+                    // Displays all edges part of the resulting residual graph.
+                    for (List<Edges> edges : resultGraph){
+                        for (Edges e : edges){
+                            System.out.println(e.toString(s, t));
+                        }
+                    }
+                    break;
             }
         }
     }

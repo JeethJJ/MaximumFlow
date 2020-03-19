@@ -9,32 +9,43 @@ import static java.lang.Math.min;
 
 public class FlowBase {
     static final long INF = Long.MAX_VALUE;
-    public static List<Edges>[] edges;        // list of all edges
+    public ArrayList<Edges>[] edges;        // list of all edges
     public int source;
     public int sink;
-    public int visitedToken = 1;
+    public int noOfNodes;
+    public int visitedToken;
     public int[] visited;
     public long maxFlow;
-    public static ArrayList<Edges>[][] path;        // list of all edges
+    public ArrayList<Edges>[][] path;        // list of all edges
 
 
     public FlowBase(int source,int sink,int noOfNodes) {
         this.source = source;
         this.sink = sink;
+        this.noOfNodes = noOfNodes;
         createList(noOfNodes);
-        visited = new int[noOfNodes];
     }
 
     public void createList(int nodes) {
-        edges = new List[nodes];
+        edges = new ArrayList[nodes];
         for (int i = 0; i < nodes; i++){
             edges[i] = new ArrayList<Edges>();
         }
     }
 
     public List<Edges>[] getGraph() {
-        solve();
+//        solve();
         return edges;
+    }
+
+    public void alterCapacityEdge(Edges e, int capacity) {
+        for (List<Edges> ed : edges){
+            for(Edges eee : ed){
+                if(eee.equals(e)){
+                    eee.setCapacity(capacity);
+                }
+            }
+        }
     }
 
     public void addEdge(int start, int end, long capacity) {
@@ -52,6 +63,14 @@ public class FlowBase {
     public long getMaxFlow() {
         System.out.println("Path & flow in that path\n");
         System.out.print("Source node "+source+" -> ");
+        for (List<Edges> edges11 : edges){
+            for (Edges e : edges11){
+                e.setFlow(0);
+            }
+        }
+        maxFlow=0;
+        visited = new int[noOfNodes];
+        visitedToken = 1;
         solve();
         return maxFlow;
     }

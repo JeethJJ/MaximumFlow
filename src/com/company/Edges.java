@@ -7,7 +7,7 @@ public class Edges {
     private int end;
     public Edges residualEdge;
     private long flow;
-    private final long capacity;
+    private long capacity;
 
     public Edges(int start, int end, long capacity) {
         this.start = start;
@@ -33,6 +33,10 @@ public class Edges {
 
     public long getCapacity() {
         return capacity;
+    }
+
+    public void setCapacity(long capacity) {
+        this.capacity = capacity;
     }
 
     public boolean isResidual() {
